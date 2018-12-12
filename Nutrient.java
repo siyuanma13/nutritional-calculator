@@ -1,0 +1,4 @@
+
+public enum Nutrient {
+	NAME, CALORIES, FAT, CARBOHYDRATE, FIBER, PROTEIN 
+}
