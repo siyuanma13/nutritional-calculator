@@ -65,6 +65,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * 
+ * @author Siyuan Ma, Sophia Choi, Felipe Shinsato
+ *
+ */
+
 public class Main extends Application {
 	
 	

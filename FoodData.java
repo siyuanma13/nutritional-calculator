@@ -14,7 +14,7 @@ import java.util.Set;
  * This class represents the backend for managing all 
  * the operations associated with FoodItems
  * 
- * @author sapan (sapan@cs.wisc.edu)
+ * @author Siyuan Ma
  */
 public class FoodData implements FoodDataADT<FoodItem> {
     
