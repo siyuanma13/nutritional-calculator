@@ -1,37 +1,11 @@
-//////////////////// ALL ASSIGNMENTS INCLUDE THIS SECTION /////////////////////
-//
-// Title:           JavaFX Team Project
-// Files:           Main.java
-// Course:          CS400
-//
-// Author:          Sophia Choi, Felipe Shinsato, Siyuan Ma, Addison Smith (Team 9)
-// Email:           hchoi247@wisc.edu
-// Lecturer's Name: Andrew Kuemmel
-//
-//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION ///////////////////
-//
-// Partner Name:    (name of your pair programming partner)
-// Partner Email:   (email address of your programming partner)
-// Partner Lecturer's Name: (name of your partner's lecturer)
-// 
-// VERIFY THE FOLLOWING BY PLACING AN X NEXT TO EACH TRUE STATEMENT:
-//   _ Write-up states that pair programming is allowed for this assignment.
-//   _ We have both read and understand the course Pair Programming Policy.
-//   _ We have registered our team prior to the team registration deadline.
-//
-///////////////////////////// CREDIT OUTSIDE HELP /////////////////////////////
-//
-// Students who get help from sources other than their partner must fully 
-// acknowledge and credit those sources of help here.  Instructors and TAs do 
-// not need to be credited here, but tutors, friends, relatives, room mates, 
-// strangers, and others do.  If you received no outside help from either type
-//  of source, then please explicitly indicate NONE.
-//
-// Persons:         (identify each person and describe their help in detail)
-// Online Sources:  (identify each URL and describe their assistance in detail)
-//
-/////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
 
+
+/**
+ * 
+ * @authors Siyuan Ma, Sophia Choi, Felipe Shinsato
+ * 
+ *
+ */
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -65,11 +39,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-/**
- * 
- * @author Siyuan Ma, Sophia Choi, Felipe Shinsato
- *
- */
 
 public class Main extends Application {
 	
@@ -216,6 +185,13 @@ public class Main extends Application {
 					final Stage foodPopUp = new Stage();
 					foodPopUp.initModality(Modality.WINDOW_MODAL);
 
+					// Create text to tell user instructions
+					Text instruction = new Text("Manually enter food details.");
+					instruction.setStyle("-fx-font-size: 18 pt");
+					// Create text to tell user instructions
+					Text noteInstructions = new Text("NOTE: This will refresh the Food List. "
+							+ "Please reapply filters if they are set.");
+					noteInstructions.setStyle("-fx-font-size: 14 pt");
 					Button addFoodButton = new Button("Add Food");
 					TextField foodId = new TextField("Enter food ID here");
 					TextField foodName = new TextField("Enter name of food here");
@@ -227,7 +203,8 @@ public class Main extends Application {
 
 					VBox addFoodBox = new VBox();
 					addFoodBox.setAlignment(Pos.CENTER);
-					addFoodBox.getChildren().addAll(new Label("Food ID: "), foodId,
+					addFoodBox.getChildren().addAll(instruction, noteInstructions, 
+							new Label("Food ID: "), foodId,
 							new Label("Food Name: "), foodName,
 							new Label("Calories: "), caloriesVal,
 							new Label("Carbs: "), carbsVal,
@@ -266,6 +243,8 @@ public class Main extends Application {
 								if (calInt<0||carbsInt<0||fatInt<0||fiberInt<0||proteinInt<0) {
 									Alert a = new Alert(AlertType.INFORMATION, "Value must be an positive.", ButtonType.OK);
 									a.showAndWait();
+									return;
+									
 								}
 								
 								FoodItem foodItemToAdd = new FoodItem(id,name);
@@ -274,6 +253,8 @@ public class Main extends Application {
 								foodItemToAdd.addNutrient("FAT", fatInt);
 								foodItemToAdd.addNutrient("FIBER", fiberInt);
 								foodItemToAdd.addNutrient("PROTEIN", proteinInt);
+								
+								System.out.println("Nutrients for new FoodItem: " + foodItemToAdd.getNutrients());
 								
 								//add new food item to food data object
 								foodObject.addFoodItem(foodItemToAdd);
@@ -492,9 +473,9 @@ public class Main extends Application {
 						@Override
 						public void handle(ActionEvent arg0) {
 							
-							String nutr = nutrientName.getText().toUpperCase();
-							String comp = comparator.getText();
-							String val = value.getText();
+							String nutr = nutrientName.getText().toUpperCase().trim();
+							String comp = comparator.getText().trim();
+							String val = value.getText().trim();
 							
 							
 							boolean isName = false;
@@ -506,7 +487,7 @@ public class Main extends Application {
 								}
 								else {
 									Alert a = new Alert(AlertType.INFORMATION, "Invalid Operator for name search."
-											+ "must be ==.", ButtonType.OK);
+											+ " Must be ==.", ButtonType.OK);
 									a.showAndWait();
 								}
 							}
@@ -525,23 +506,13 @@ public class Main extends Application {
 										}
 										else {
 											Alert a = new Alert(AlertType.INFORMATION, "Invalid Operator."
-													+ "must be <=, >=, or ==.", ButtonType.OK);
+													+ " Must be <=, >=, or ==.", ButtonType.OK);
 											a.showAndWait();
 										}
 									}
-	//								else if (nutr.equals("NAME")) {
-	//									if (comp.equals("==")) {
-	//										rulesList.add(nutr +" "+comp+" "+ valInt);
-	//									}
-	//									else {
-	//										Alert a0 = new Alert(AlertType.INFORMATION, "Invalid Operator."
-	//												+ "searching on name must use == operator.", ButtonType.OK);
-	//										a0.showAndWait();
-	//									}
-	//								}
 									else {
 										Alert a1 = new Alert(AlertType.INFORMATION, "Invalid search."
-												+ "must search on calories, carbohydrate, "
+												+ " Must search on calories, carbohydrate, "
 												+ "fat, fiber, protein, or name.", ButtonType.OK);
 										a1.showAndWait();
 									}
@@ -572,6 +543,7 @@ public class Main extends Application {
 						@Override
 						public void handle(ActionEvent arg0) {	
 							
+							
 							//add to existing rules list
 							for (int i = 0; i<rulesList.size(); i++) {
 								String rule = rulesList.get(i);
@@ -597,21 +569,22 @@ public class Main extends Application {
 								ObservableFilteredList8.add(filtered.get(i));
 							}
 							
-							//Make observable filter list for the filter listview
-							ObservableList<String> ObservableFilteredRuleList8 = FXCollections.observableArrayList(); 
-							for (int i=0; i<displayRuleList.size(); i++) {
-								ObservableFilteredRuleList8.add(displayRuleList.get(i));
+							if (displayRuleList.size()!=0) {
+								//Make observable filter list for the filter listview
+								ObservableList<String> ObservableFilteredRuleList8 = FXCollections.observableArrayList(); 
+								for (int i=0; i<displayRuleList.size(); i++) {
+									ObservableFilteredRuleList8.add(displayRuleList.get(i));
+								}
+								
+								//Set the filter List View to display the rules
+								filterList.setItems(ObservableFilteredRuleList8);
+								
+								foodList.setItems(ObservableFilteredList8);
+								filterPopUp.close();
+								
+								//update food item counter 
+								foodText.setText("Food List (" + foodList.getItems().size() + ")");
 							}
-							
-							//Set the filter List View to display the rules
-							filterList.setItems(ObservableFilteredRuleList8);
-							
-							foodList.setItems(ObservableFilteredList8);
-							filterPopUp.close();
-							
-							//update food item counter 
-							foodText.setText("Food List (" + foodList.getItems().size() + ")");
-							
 						
 						}
 					});

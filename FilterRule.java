@@ -1,4 +1,6 @@
-
+ /* @authors Addison Smith, Sapan Gupta
+  * 
+  */
 public class FilterRule {
 	public final Nutrient ntype;
 	public final String compareMethod;

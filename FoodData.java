@@ -8,13 +8,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * This class represents the backend for managing all 
  * the operations associated with FoodItems
  * 
- * @author Siyuan Ma
+ * @author Siyuan Ma, Sapan Gupta
  */
 public class FoodData implements FoodDataADT<FoodItem> {
     
@@ -91,7 +92,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
     // Map of nutrients and their corresponding index
     protected HashMap<String, BPTree<Double, FoodItem>> indexes;
     private BPTree<String, FoodItem> nameIndex;
-    
 
     
     //fileName of csv
@@ -103,9 +103,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * Public constructor
      */
     public FoodData() {
-        // TODO : Complete
-    	
-    	
+
     	this.foodItemList = new LinkedList<FoodItem>();
     	
     
@@ -133,7 +131,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
     
     @Override
     public void loadFoodItems(String filePath) {
-        // TODO : Complete
+
     	BufferedReader br = null;
     	String line = "";
     	
@@ -189,11 +187,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
 			this.fileName=filePath;
 			
     	} catch (Exception e) {
-    		
 
-    		
     		this.foodItemList = null;
-    		System.out.println("File does not exist!");
+    		//System.out.println("File does not exist!");
     		
     		
     		
@@ -245,8 +241,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
-    	System.out.println(indexes.get("CARBOHYDRATE").toString());
-    	System.out.println(indexes.get("CALORIES").toString());
     	FoodQuery query = new FoodQuery(this, rules);
     	return query.orderedResults();
     }
@@ -256,14 +250,12 @@ public class FoodData implements FoodDataADT<FoodItem> {
      * @see skeleton.FoodDataADT#addFoodItem(skeleton.FoodItem)
      * 
      * Siyuan 12/5: Implemented this for the foodItemList field.
-     * DID NOT DO ANYTHING TO UPDATE THE INDEX FIELD. 
      * 
      * Add the foodItem alphabetically. This is in linear time.
-     * @Addison, should can this be more efficient, using the index/BPTree?
      */
+    
     @Override
     public void addFoodItem(FoodItem foodItem) {
-        // TODO : Complete
     	
     	//boolean to see if we have to add to end
     	boolean notAddToEnd = false;
@@ -273,23 +265,33 @@ public class FoodData implements FoodDataADT<FoodItem> {
     	//if list is empty, add to beginning of list
     	if (this.foodItemList.size()==0) {
     		this.foodItemList.add(foodItem);
-    		return;
+    		
+    	} else {
+	    	
+	    	for (int i = 0; i<this.foodItemList.size(); i++) {
+	    		if (this.foodItemList.get(i).getName().toUpperCase().compareTo(foodItem.getName().toUpperCase())>=0){
+	    			this.foodItemList.add(i, foodItem);
+	    			notAddToEnd = true;
+	    			break;
+	    		}
+	    	}
+	    	
+	    	if (!notAddToEnd) {
+	    		this.foodItemList.add(foodItem);
+	    	}
     	}
-    	
-    	//DID NOT DO ANYTHING WITH THE INDEX FIELD. 
-    	for (int i = 0; i<this.foodItemList.size(); i++) {
-    		if (this.foodItemList.get(i).getName().toUpperCase().compareTo(foodItem.getName().toUpperCase())>=0){
-    			this.foodItemList.add(i, foodItem);
-    			notAddToEnd = true;
-    			break;
+    	//Add to the Nutrient indexes
+    	Map<String,Double> gotNutrients = foodItem.getNutrients();
+    	System.out.println("This map was stored in foodItem.nutrients: " + gotNutrients);
+    	for(String s : gotNutrients.keySet() ) {
+    		BPTree<Double,FoodItem> index = indexes.get(s);
+    		if(index!=null)
+    		{
+    			index.insert(gotNutrients.get(s), foodItem);
     		}
     	}
-    	
-    	if (!notAddToEnd) {
-    		this.foodItemList.add(foodItem);
-    	}
-    	
-    	
+    	//Add to NameIndex
+    	nameIndex.insert(foodItem.getName(), foodItem);
     }
 
     /*
@@ -301,7 +303,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> getAllFoodItems() {
-        // TODO : Complete
     	
     	if (this.foodItemList!=null) {
         	return this.foodItemList;
@@ -322,7 +323,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     
     public void saveFoodItems(String filename) {
-    	//TODO: Complete
     	
     	//create a new Filewriter object 
     	FileWriter fileWriter = null;
@@ -387,7 +387,6 @@ public class FoodData implements FoodDataADT<FoodItem> {
     	f.saveFoodItems("siyTest2.csv");
     	
     	
-    	//System.out.println("180E".compareTo("a"));
     	
     	for (int i = 0; i < t.size(); i++) {
     		

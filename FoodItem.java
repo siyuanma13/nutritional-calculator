@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * This class represents a food item with all its properties.
  * 
- * @author Siyuan Ma 
+ * @author Siyuan Ma, Sapan Gupta
  */
 public class FoodItem {
     // The name of the food item.
@@ -56,7 +56,6 @@ public class FoodItem {
      * @return nutrients of the food item
      */
     public HashMap<String, Double> getNutrients() {
-        // TODO : Complete
         return this.nutrients;
     }
 
@@ -65,8 +64,7 @@ public class FoodItem {
      * If nutrient already exists, updates its value.
      */
     public void addNutrient(String name, double value) {
-        // TODO : Complete
-    
+
     	this.nutrients.put(name, value);
     	
     	
@@ -78,7 +76,6 @@ public class FoodItem {
      * If not present, then returns 0.
      */
     public double getNutrientValue(String name) {
-        // TODO : Complete
         return this.nutrients.get(name);
     }
     
