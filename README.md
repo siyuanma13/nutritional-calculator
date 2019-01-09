@@ -1,3 +1,4 @@
+Authors: Siyuan Ma, Sophia Choi, Felipe Shinsato, Addison Smith
 To run, download all files to a directory. Go to the directory, and enter "java Main" in the command prompt. 
 
 Initial Layout will look like this: 
